@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import json
 import cPickle as pickle
 import os
@@ -15,12 +15,12 @@ def project(endpoint, key_id):
             os.makedirs(directory)
         obj = json.loads(request.form['data'])
         pickle.dump(obj, open(filename, "wb"))
-	return "success"
+	return jsonify({"data": "success"})
     elif request.method == 'GET':
 	if os.path.isfile(filename):
-            return json.dumps(pickle.load(open(filename, "rW")))
+            return jsonify({"data": pickle.load(open(filename, "rW"))})
         else:
-            return json.dumps([None])
+            return jsonify({"data": None})
 
 
 if __name__ == "__main__":
